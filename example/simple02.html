@@ -2,17 +2,22 @@
 <html>
 	<meta charset="UTF-8">
 	
-	<title>Object Extractor Example 1</title>
+	<title>Object Extractor Example 2</title>
 	<link rel="stylesheet" href="css/style.css?v=2">
 
 </head>
 
 <body>
 
-    <div id="person">
+    <div id="person" class="person">
         <h1 data-property="name">Scott Williams</h1>
         <h2 data-property="email">scott@example.com</h2>
         <span data-property="age" data-value="30"></span>
+    </div>
+    <div id="other_person" class="person">
+        <h1 data-property="name">John Doe</h1>
+        <h2 data-property="email">john@example.com</h2>
+        <span data-property="age" data-value="22"></span> 
     </div>
 
     <script src="javascripts/jquery-1.5.2.js"></script>
