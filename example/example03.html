@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+	<meta charset="UTF-8">
+	
+	<title>Object Extractor Example 3</title>
+	<link rel="stylesheet" href="css/style.css?v=2">
+
+</head>
+
+<body>
+
+    <div id="person" class="person">
+        <h1 data-property="name">Scott Williams</h1>
+        <h2 data-property="email">scott@example.com</h2>
+        <span data-property="age" data-value="30"></span>
+        <div class="address" data-property="address">
+            <span data-property="street">12345 E Fake st</span>
+            <span data-property="city">Fakesville</span>
+            <span data-property="state">AZ</span>
+            <span id="zip" data-property="zip">12345</span>
+        </div>
+    </div>
+
+    <script src="javascripts/jquery-1.5.2.js"></script>
+    <script src="../src/extractor.js"></script>
+</html>
