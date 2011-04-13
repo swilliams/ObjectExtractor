@@ -4,22 +4,16 @@ var E = function() {
         createSetter: function($elem, obj, name) {
             // The value is the data-value property or the text of the element.
             // The data-value takes precedence because it would have been explicitly set.
-            // If the element is a node, recursively extract it.
-            if ($elem.children('[data-property]').length > 0) {
-                // recurse
-                objects = $elem.extractObjects();
-                obj[name] = objects.length === 1 ? objects[0] : objects;
-            } else {
-                var val = $elem.is('[data-value]') ? $elem.attr('data-value') : $elem.text(),
-                    hiddenField = name + '_';
-                obj[hiddenField] = val;
-                obj[name] = function() {
-                    if (arguments.length > 0) {
-                        obj[hiddenField] = arguments[0];
-                    }
-                    return obj[hiddenField];
+            var val = $elem.is('[data-value]') ? $elem.attr('data-value') : $elem.text(),
+                hiddenField = name + '_';
+            obj[hiddenField] = val;
+            obj[name] = function() {
+                if (arguments.length > 0) {
+                    obj[hiddenField] = arguments[0];
                 }
+                return obj[hiddenField];
             }
+        
         },
 
         extract: function($target) {
@@ -30,8 +24,25 @@ var E = function() {
                 return null;
             }
             $target.children('[data-property]').each(function(i, n) {
-                var $elem = $(n);
-                that.createSetter($elem, obj, $(n).attr('data-property'));
+                var $elem = $(n),
+                    name = $elem.attr('data-property');
+                // If the element is a node, recursively extract it.
+                if ($elem.children('[data-property]').length > 0) {
+                    objects = $elem.extractObjects();
+                    if (obj[name] === undefined) {
+                        obj[name] = objects.length === 1 ? objects[0] : objects;
+                    } else {
+                        if (obj[name] instanceof Array) {
+                            obj[name].push(objects[0]);
+                        } else {
+                            var tmp = obj[name]
+                            obj[name] = [tmp, objects[0]];
+                        }
+                    }
+                } else {
+                
+                    that.createSetter($elem, obj, name);
+                }
             });
             return obj;
         }
