@@ -1,11 +1,22 @@
 var E = {
-    extract: function($target) {
-        var obj = {};
-        $target.children('[data-property]').each(function(i, n) {
-            var $elem = $(n),
-                val = $elem.is('[data-value]') ? $elem.attr('data-value') : $elem.text();
+    createSetter: function($elem, obj, name) {
+        var val = $elem.is('[data-value]') ? $elem.attr('data-value') : $elem.text(),
+            hiddenField = name + '_';
+        obj[hiddenField] = val;
+        obj[name] = function() {
+            if (arguments.length > 0) {
+                obj[hiddenField] = arguments[0];
+            }
+            return obj[hiddenField];
+        }
+    },
 
-            obj[$(n).attr('data-property')] = val;
+    extract: function($target) {
+        var obj = {},
+            that = this;
+        $target.children('[data-property]').each(function(i, n) {
+            var $elem = $(n);
+            that.createSetter($elem, obj, $(n).attr('data-property'));
         });
         return obj;
     }
