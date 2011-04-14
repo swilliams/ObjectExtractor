@@ -51,7 +51,7 @@ var E = function() {
                 if (arguments.length > 0) {
                     obj[hiddenField].update(arguments[0]);
                 }
-                return obj[hiddenField];
+                return obj[hiddenField].val;
             }
         
         },
