@@ -1,3 +1,5 @@
+//= require "extensions"
+
 var E = function() {
 
     var proto = {
