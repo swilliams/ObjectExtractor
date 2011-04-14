@@ -1,5 +1,29 @@
 var E = function() {
 
+    var proto = {
+        val: null,
+        $elem: null,
+        update: function(val) {
+            var that = this;
+            if (that.$elem === null) {
+                // error
+                return;
+            }
+            that.val = val;
+            if (that.$elem.is('[data-value]')) {
+                that.$elem.attr('data-value', val);
+            } else {
+                that.$elem.text(val);
+            }
+        },
+        beget: function(val, $elem) {
+            var obj = Object.create(this);
+            obj.val = val;
+            obj.$elem = $elem;
+            return obj;
+        }
+    };
+
     function extractSubElements($elem, obj, name) {
         var objects = $elem.extractObjects();
         if (obj[name] === undefined) {
@@ -19,11 +43,13 @@ var E = function() {
             // The value is the data-value property or the text of the element.
             // The data-value takes precedence because it would have been explicitly set.
             var val = $elem.is('[data-value]') ? $elem.attr('data-value') : $elem.text(),
-                hiddenField = name + '_';
-            obj[hiddenField] = val;
+                hiddenField = name + '_',
+                target = proto.beget(val, $elem);
+            
+            obj[hiddenField] = target;
             obj[name] = function() {
                 if (arguments.length > 0) {
-                    obj[hiddenField] = arguments[0];
+                    obj[hiddenField].update(arguments[0]);
                 }
                 return obj[hiddenField];
             }
